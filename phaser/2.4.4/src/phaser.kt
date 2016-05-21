@@ -49,10 +49,10 @@ import kotlin.reflect.KClass
 }
 
 
-interface AssertName
+interface AssetName
 
-data class Assert(@native val name: AssertName, @native val url: String) {
-	constructor(name: String, url: String) : this(name as AssertName, url)
+data class Asset(@native val name: AssetName, @native val url: String) {
+	constructor(name: String, url: String) : this(name as AssetName, url)
 }
 
 /*
@@ -111,7 +111,7 @@ open class GameState(game: Phaser.Game) {
 }
 
 @native("Phaser.Loader") class Loader(val game: Phaser.Game) {
-	@native fun image(name: AssertName, url: String)
+	@native fun image(name: AssetName, url: String)
 	@native val hasLoaded: Boolean = noImpl
 	@native val isLoading: Boolean = noImpl
 	@native val onFileComplete: Signal<Any> = noImpl
@@ -127,7 +127,7 @@ open class GameState(game: Phaser.Game) {
 
 @native("Phaser.GameObjectFactory") class PhaserGameObjectFactory(val game: Phaser.Game) {
 	@native val world: World = noImpl
-	@native fun sprite(x: Number, y: Number, key: AssertName): Sprite = noImpl
+	@native fun sprite(x: Number, y: Number, key: AssetName): Sprite = noImpl
 	@native fun text(x: Number, y: Number, text: String): Text
 	@native fun text(x: Number, y: Number, text: String, style: TextStyle): Text
 
@@ -208,8 +208,8 @@ fun TextStyle(
 	@native var rotation: Double
 }
 
-fun Loader.image(assert: Assert) = this.image(assert.name, assert.url)
-fun Loader.image(vararg asserts: Assert) = asserts.forEach { this.image(it.name, it.url) }
+fun Loader.image(asset: Asset) = this.image(asset.name, asset.url)
+fun Loader.image(vararg assets: Asset) = assets.forEach { image(it.name, it.url) }
 
 @native("body") val Sprite.body: Physics.Arcade.Body get() = noImpl
 @native("body") val Sprite.arcadeBody: Physics.Arcade.Body get() = noImpl
